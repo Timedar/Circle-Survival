@@ -8,7 +8,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
     [SerializeField] Canvas HUDCanvas;
-    [SerializeField] Canvas GameOverCanvas;
+    [SerializeField] Canvas gameOverPauseCanvas;
+    [SerializeField] TextMeshProUGUI ComunicatTMP;
     [SerializeField] TextMeshProUGUI ScoreTMP;
     [SerializeField] TextMeshProUGUI TimeTMP;
     [SerializeField] TextMeshProUGUI BestScoreTMP;
@@ -40,10 +41,11 @@ public class UIManager : MonoBehaviour
         BestScoreTMP.text = $"NEW BEST SCORE {bestScore}!";
     }
 
-    public void GameOverScrene()
+    public void GameOverScrene(string state)
     {
+        ComunicatTMP.text = state;
         HUDCanvas.enabled = false;
-        GameOverCanvas.enabled = true;
+        gameOverPauseCanvas.enabled = true;
     }
 
 }

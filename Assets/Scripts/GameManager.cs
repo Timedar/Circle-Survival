@@ -33,10 +33,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Podobne 2 funckje
+    public void Pause()
+    {
+        UIManager.instance.GameOverScrene("PAUSE");
+    }
     public void GameOver()
     {
         //Stop game and show ending screen
-        UIManager.instance.GameOverScrene();
+        UIManager.instance.GameOverScrene("GAME OVER");
         Debug.Log("Boom");
     }
 

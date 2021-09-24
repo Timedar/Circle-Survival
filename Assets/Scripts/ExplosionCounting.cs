@@ -14,19 +14,23 @@ public class ExplosionCounting : MonoBehaviour
     private float _ramndomExplosionTime;
     [SerializeField] GameEvent gameOver;
     [SerializeField] GameEvent score;
+    bool isBomb;
     private void Awake() {
         _tmp = GetComponentInChildren<TextMeshProUGUI>();
         // _image = GetComponentInChildren<Image>();
     }
     private void Start()
     {
+        if(this.CompareTag("Bomb"))
+            isBomb = true;
+
         _ramndomExplosionTime = Random.Range(2,5);
         StartCoroutine(ExplosionCounter(_ramndomExplosionTime));
     }
 
     public void BombClick()
     {
-        if(this.CompareTag("Point"))
+        if(!isBomb)
             score.CallEvnet();
         else
             gameOver.CallEvnet();
@@ -46,8 +50,9 @@ public class ExplosionCounting : MonoBehaviour
 
             yield return new WaitForSeconds(refreshFrequence);
         }
-
-        gameOver.CallEvnet();
+        
+        if(!isBomb)
+            gameOver.CallEvnet();
 
         //Zmienic
         Destroy(this.gameObject);
