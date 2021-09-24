@@ -7,4 +7,9 @@ public class LoadManager : ScriptableObject
     public void StartGame(){
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex+1);
     }
+
+    public void MainManu()
+    {
+        SceneManager.LoadScene(0);
+    }
 }

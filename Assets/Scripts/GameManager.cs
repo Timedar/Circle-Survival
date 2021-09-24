@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameEvent score;
     [SerializeField] SaveParameters save;
     private Camera camera;
+    public static event UnityAction<int> updateScoreEvent = delegate{};
+    public static event UnityAction<float> updateTimeEvent = delegate{};
     private void Start()
     {
         camera = Camera.main;
@@ -22,13 +25,18 @@ public class GameManager : MonoBehaviour
     {
         //Update ui and best score SO
         currentScore += 1;
+        updateScoreEvent.Invoke(currentScore);
         if(save.bestScore < currentScore)
+        {
             save.bestScore = currentScore;
+            updateScoreEvent.Invoke(save.bestScore);
+        }
     }
 
     public void GameOver()
     {
         //Stop game and show ending screen
+        UIManager.instance.GameOverScrene();
         Debug.Log("Boom");
     }
 
