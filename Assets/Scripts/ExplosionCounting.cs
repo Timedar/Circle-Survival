@@ -30,6 +30,9 @@ public class ExplosionCounting : MonoBehaviour
             score.CallEvnet();
         else
             gameOver.CallEvnet();
+        
+        //Zmienic
+        Destroy(this.gameObject);
     }
 
     private IEnumerator ExplosionCounter(float time)

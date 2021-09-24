@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,10 +9,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameEvent gameOver;
     [SerializeField] GameEvent score;
     [SerializeField] SaveParameters save;
+    private Camera camera;
     private void Start()
     {
+        camera = Camera.main;
         score.reciveEvent += CountingPoints;
         gameOver.reciveEvent += GameOver;
+        InputReader.current.onClickStart += OnClick;
     }
 
     public void CountingPoints()
@@ -31,7 +35,19 @@ public class GameManager : MonoBehaviour
     private void OnDestroy() {
         score.reciveEvent -= CountingPoints;
         gameOver.reciveEvent -= GameOver;
+        InputReader.current.onClickStart -= OnClick;
     }
 
+    private void OnClick() {
+        Vector2 mousePos = camera.ScreenToWorldPoint(InputReader.current.position);
+        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+        if(hit)
+        {
+            var selected = hit.transform.GetComponent<ExplosionCounting>();
+            if(selected != null)
+                selected.BombClick();
+        }
+    
+    }
 
 }
