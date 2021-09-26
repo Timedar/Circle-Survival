@@ -28,7 +28,7 @@ public class UIManager : MonoBehaviour
     }
     void UpdateTime(float time)
     {
-        TimeTMP.text = $"Time: {time}";
+        TimeTMP.text = $"Time: {Mathf.FloorToInt(time)}";
     }
 
     void UpdateScore(int score)

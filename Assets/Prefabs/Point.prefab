@@ -169,6 +169,7 @@ MonoBehaviour:
   image: {fileID: 258569878086345404}
   gameOver: {fileID: 11400000, guid: 3e4bb001ee55ae240836df216c856b5c, type: 2}
   score: {fileID: 11400000, guid: 0a575b8c752b7164ba20e82f142c1e17, type: 2}
+  objectEvent: {fileID: 11400000, guid: d8be5ecc2266ac04c964a456bb58604f, type: 2}
 --- !u!1 &258569879564872317
 GameObject:
   m_ObjectHideFlags: 0
