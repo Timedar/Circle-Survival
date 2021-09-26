@@ -7,24 +7,24 @@ using UnityEngine.InputSystem;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] public int currentScore;
-    [SerializeField] GameEvent gameOver;
-    [SerializeField] GameEvent score;
-    [SerializeField] SaveParameters save;
+    [SerializeField] SaveParameters saveSO;
+    [SerializeField] GameEvent gameOverEvent;
+    [SerializeField] GameEvent scoreEvent;
     public static event UnityAction<int> updateScoreEvent = delegate{};
     public static event UnityAction<float> updateTimeEvent = delegate{};
-    private Camera camera;
-    private float time;
+    private Camera mainCamera;
+    private float timeFromBegin;
     private void Start()
     {
-        camera = Camera.main;
-        score.reciveEvent += CountingPoints;
-        gameOver.reciveEvent += GameOver;
+        mainCamera = Camera.main;
+        scoreEvent.reciveEvent += CountingPoints;
+        gameOverEvent.reciveEvent += GameOver;
         InputReader.current.onClickStart += OnClick;
     }
 
     private void Update() {
-        time += Time.deltaTime;
-        updateTimeEvent.Invoke(time);
+        timeFromBegin += Time.deltaTime;
+        updateTimeEvent.Invoke(timeFromBegin);
     }
 
     public void CountingPoints()
@@ -32,10 +32,10 @@ public class GameManager : MonoBehaviour
         //Update ui and best score SO
         currentScore += 1;
         updateScoreEvent.Invoke(currentScore);
-        if(save.bestScore < currentScore)
+        if(saveSO.bestScore < currentScore)
         {
-            save.bestScore = currentScore;
-            updateScoreEvent.Invoke(save.bestScore);
+            saveSO.bestScore = currentScore;
+            updateScoreEvent.Invoke(saveSO.bestScore);
         }
     }
 
@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
 
     private void OnClick() {
-        Vector2 mousePos = camera.ScreenToWorldPoint(InputReader.current.position);
+        Vector2 mousePos = mainCamera.ScreenToWorldPoint(InputReader.current.position);
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
         if(hit)
         {
@@ -64,8 +64,8 @@ public class GameManager : MonoBehaviour
     
     }
     private void OnDestroy() {
-        score.reciveEvent -= CountingPoints;
-        gameOver.reciveEvent -= GameOver;
+        scoreEvent.reciveEvent -= CountingPoints;
+        gameOverEvent.reciveEvent -= GameOver;
         InputReader.current.onClickStart -= OnClick;
     }
 

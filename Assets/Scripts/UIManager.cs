@@ -33,11 +33,13 @@ public class UIManager : MonoBehaviour
 
     void UpdateScore(int score)
     {
-        ScoreTMP.text = $"Score: {score}";
+        ScoreTMP.GetComponent<Animator>().SetTrigger("ChangeNum");
+        ScoreTMP.text = score.ToString();
     }
 
     void UpdateBestScore(int bestScore)
     {
+        BestScoreTMP.GetComponentInParent<Animator>().enabled = true;
         BestScoreTMP.text = $"NEW BEST SCORE {bestScore}!";
     }
 

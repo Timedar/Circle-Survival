@@ -31,6 +31,7 @@ public class InputReader : MonoBehaviour, ActionMap.IGameplayActions
         {
             case InputActionPhase.Started:
                 tap = true;
+                Debug.Log("Click");
                 onClickStart.Invoke();
                 break;
             case InputActionPhase.Performed:

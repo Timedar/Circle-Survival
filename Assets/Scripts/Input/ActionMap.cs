@@ -30,7 +30,7 @@ public class @ActionMap : IInputActionCollection, IDisposable
                     ""name"": ""Position"",
                     ""type"": ""Value"",
                     ""id"": ""b6bee053-7937-4ff6-9d9e-8a50a40e383b"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -39,7 +39,7 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""69c442cc-e566-40cb-b7e3-1105d8975cd7"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
+                    ""path"": ""<Touchscreen>/primaryTouch/press"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

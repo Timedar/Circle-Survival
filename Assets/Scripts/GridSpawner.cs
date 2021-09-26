@@ -10,22 +10,22 @@ public class GridSpawner : MonoBehaviour
     [SerializeField] GameEventTransform objectEvent;
     [SerializeField] GameObject pointPrefab;
     [SerializeField] GameObject bombPrefab;
-    [SerializeField] float bombIndicator = 0.1f;
-    [SerializeField] float total;
-    [SerializeField] float precentage;
     [SerializeField] bool drawGrid;
     public Dictionary<Transform, Vector2> objectsOnGridDictionary = new Dictionary<Transform, Vector2>();
+    float bombIndicator = 0.1f;
+    float total;
+    float precentage;
+    float bombs;
+    float points;
 
-    private float time = 1;
-
-
+    RectTransform rectTransform;
     float width;
     float heigh;
     float rectCellWidth;
     float rectCellHeight;
-    RectTransform rectTransform;
-    float bombs;
-    float points;
+  
+    private float time = 1;
+
     private void Start()
     {
         objectEvent.reciveEvent += RemoveFromList;
