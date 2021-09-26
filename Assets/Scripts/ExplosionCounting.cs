@@ -10,13 +10,14 @@ public class ExplosionCounting : MonoBehaviour
     [SerializeField] float refreshFrequence;
 
     [SerializeField] Image image;
-    private TextMeshProUGUI _tmp; 
-    private float _ramndomExplosionTime;
+    private TextMeshProUGUI tmp; 
+    private float ramndomExplosionTime;
     [SerializeField] GameEvent gameOver;
     [SerializeField] GameEvent score;
+    [SerializeField] GameEventTransform objectEvent;
     bool isBomb;
     private void Awake() {
-        _tmp = GetComponentInChildren<TextMeshProUGUI>();
+        tmp = GetComponentInChildren<TextMeshProUGUI>();
         // _image = GetComponentInChildren<Image>();
     }
     private void Start()
@@ -24,8 +25,8 @@ public class ExplosionCounting : MonoBehaviour
         if(this.CompareTag("Bomb"))
             isBomb = true;
 
-        _ramndomExplosionTime = Random.Range(2,5);
-        StartCoroutine(ExplosionCounter(_ramndomExplosionTime));
+        ramndomExplosionTime = Random.Range(2,5);
+        StartCoroutine(ExplosionCounter(ramndomExplosionTime));
     }
 
     public void BombClick()
@@ -36,6 +37,7 @@ public class ExplosionCounting : MonoBehaviour
             gameOver.CallEvnet();
         
         //Zmienic
+        objectEvent.CallEvnet(this.transform);
         Destroy(this.gameObject);
     }
 
@@ -45,8 +47,8 @@ public class ExplosionCounting : MonoBehaviour
         {
             time -= refreshFrequence;
 
-            image.fillAmount = Mathf.InverseLerp(0,_ramndomExplosionTime, time);
-            _tmp.text = Mathf.Ceil(time).ToString();
+            image.fillAmount = Mathf.InverseLerp(0,ramndomExplosionTime, time);
+            tmp.text = Mathf.Ceil(time).ToString();
 
             yield return new WaitForSeconds(refreshFrequence);
         }
@@ -55,6 +57,7 @@ public class ExplosionCounting : MonoBehaviour
             gameOver.CallEvnet();
 
         //Zmienic
+        objectEvent.CallEvnet(this.transform);
         Destroy(this.gameObject);
         yield return null;
     }

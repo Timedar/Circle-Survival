@@ -12,6 +12,4 @@ public class GameEvent : ScriptableObject
         if(reciveEvent != null)
             reciveEvent();
     }
-
-
 }
