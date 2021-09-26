@@ -5,15 +5,19 @@ using UnityEngine.UI;
 
 public class GridSpawner : MonoBehaviour
 {
-    [SerializeField] public Vector2Int gridSize = new Vector2Int(1,1);
-    [SerializeField] private AnimationCurve dificultyCurveLvl;
-    [SerializeField] private GameEventTransform objectEvent;
-    [SerializeField] private GameObject pointPrefab;
-    [SerializeField] private GameObject bombPrefab;
+    [SerializeField] Vector2Int gridSize = new Vector2Int(1,1);
+    [SerializeField] AnimationCurve dificultyCurveLvl;
+    [SerializeField] GameEventTransform objectEvent;
+    [SerializeField] GameObject pointPrefab;
+    [SerializeField] GameObject bombPrefab;
     [SerializeField] float bombIndicator = 0.1f;
     [SerializeField] float total;
     [SerializeField] float precentage;
+    [SerializeField] bool drawGrid;
     public Dictionary<Transform, Vector2> objectsOnGridDictionary = new Dictionary<Transform, Vector2>();
+
+    private float time = 1;
+
 
     float width;
     float heigh;
@@ -25,7 +29,7 @@ public class GridSpawner : MonoBehaviour
     private void Start()
     {
         objectEvent.reciveEvent += RemoveFromList;
-
+        GameManager.updateTimeEvent += DificultyCalculating;
         Init();
 
         StartCoroutine(Spawner());
@@ -46,10 +50,9 @@ public class GridSpawner : MonoBehaviour
 
             objectsOnGridDictionary.Add(spawnedObject.transform, gridPosition);
 
-            yield return new WaitForSeconds(dificultyCurveLvl.Evaluate(time));
+            yield return new WaitForSeconds(time);
         }
     }
-
     private GameObject RandomObject()
     {
         total = bombs + points;
@@ -76,17 +79,11 @@ public class GridSpawner : MonoBehaviour
         }
     }
     
-    float time = 0;
 
     public void RemoveFromList(Transform transform)
     { 
         if(objectsOnGridDictionary.ContainsKey(transform))
             objectsOnGridDictionary.Remove(transform);
-    }
-
-    private void Update() {
-        time += Time.deltaTime;
-        
     }
 
     private void Init()
@@ -102,8 +99,13 @@ public class GridSpawner : MonoBehaviour
         rectCellWidth = width / (float)gridSize.x;
         rectCellHeight = heigh / (float)gridSize.y;
     }
+    
+    private void DificultyCalculating(float value)
+    {
+        time = dificultyCurveLvl.Evaluate(value);
+    }
 
-    [SerializeField] bool drawGrid;
+  
     private void OnDrawGizmos() {
         if(!drawGrid)
             return;
@@ -125,6 +127,7 @@ public class GridSpawner : MonoBehaviour
 
     private void OnDestroy() {
         objectEvent.reciveEvent -= RemoveFromList;
+        GameManager.updateTimeEvent -= DificultyCalculating;
     }
     
 }

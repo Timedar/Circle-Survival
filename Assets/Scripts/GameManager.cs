@@ -10,15 +10,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameEvent gameOver;
     [SerializeField] GameEvent score;
     [SerializeField] SaveParameters save;
-    private Camera camera;
     public static event UnityAction<int> updateScoreEvent = delegate{};
     public static event UnityAction<float> updateTimeEvent = delegate{};
+    private Camera camera;
+    private float time;
     private void Start()
     {
         camera = Camera.main;
         score.reciveEvent += CountingPoints;
         gameOver.reciveEvent += GameOver;
         InputReader.current.onClickStart += OnClick;
+    }
+
+    private void Update() {
+        time += Time.deltaTime;
+        updateTimeEvent.Invoke(time);
     }
 
     public void CountingPoints()
@@ -45,11 +51,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Boom");
     }
 
-    private void OnDestroy() {
-        score.reciveEvent -= CountingPoints;
-        gameOver.reciveEvent -= GameOver;
-        InputReader.current.onClickStart -= OnClick;
-    }
 
     private void OnClick() {
         Vector2 mousePos = camera.ScreenToWorldPoint(InputReader.current.position);
@@ -61,6 +62,11 @@ public class GameManager : MonoBehaviour
                 selected.BombClick();
         }
     
+    }
+    private void OnDestroy() {
+        score.reciveEvent -= CountingPoints;
+        gameOver.reciveEvent -= GameOver;
+        InputReader.current.onClickStart -= OnClick;
     }
 
 }
