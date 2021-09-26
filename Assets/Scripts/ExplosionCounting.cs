@@ -18,14 +18,21 @@ public class ExplosionCounting : MonoBehaviour
     bool isBomb;
     private void Awake() {
         tmp = GetComponentInChildren<TextMeshProUGUI>();
-        // _image = GetComponentInChildren<Image>();
     }
     private void Start()
     {
         if(this.CompareTag("Bomb"))
+        {
             isBomb = true;
+            ramndomExplosionTime = 3;
+            StartCoroutine(ExplosionCounter(ramndomExplosionTime));
+            return;
+        }
 
-        ramndomExplosionTime = Random.Range(2,5);
+        var expTime = new Vector2(2,4) * GameManager.instance.BombTimerDificultyCalculating();
+
+        ramndomExplosionTime = Random.Range(expTime.x, expTime.y);
+
         StartCoroutine(ExplosionCounter(ramndomExplosionTime));
     }
 

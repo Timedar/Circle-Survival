@@ -6,17 +6,24 @@ using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
     [SerializeField] public int currentScore;
     [SerializeField] SaveParameters saveSO;
     [SerializeField] GameEvent gameOverEvent;
     [SerializeField] GameEvent scoreEvent;
     public static event UnityAction<int> updateScoreEvent = delegate{};
     public static event UnityAction<float> updateTimeEvent = delegate{};
+    [SerializeField] public AnimationCurve dificultySpawnCurveLvl;
+    [SerializeField] public AnimationCurve dificultyBombTimerCurveLvl;
+    float timeFromBegin;
     private Camera mainCamera;
-    private float timeFromBegin;
+
+    private void Awake() {
+        mainCamera = Camera.main;
+        instance = this;
+    }
     private void Start()
     {
-        mainCamera = Camera.main;
         scoreEvent.reciveEvent += CountingPoints;
         gameOverEvent.reciveEvent += GameOver;
         InputReader.current.onClickStart += OnClick;
@@ -37,6 +44,15 @@ public class GameManager : MonoBehaviour
             saveSO.bestScore = currentScore;
             updateScoreEvent.Invoke(saveSO.bestScore);
         }
+    }
+
+    public float SpawnDificultyCalculating()
+    {
+        return dificultySpawnCurveLvl.Evaluate(timeFromBegin);
+    }
+    public float BombTimerDificultyCalculating()
+    {
+        return dificultyBombTimerCurveLvl.Evaluate(timeFromBegin);
     }
 
     //Podobne 2 funckje

@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class GridSpawner : MonoBehaviour
 {
     [SerializeField] Vector2Int gridSize = new Vector2Int(1,1);
-    [SerializeField] AnimationCurve dificultyCurveLvl;
     [SerializeField] GameEventTransform objectEvent;
     [SerializeField] GameObject pointPrefab;
     [SerializeField] GameObject bombPrefab;
@@ -29,7 +28,7 @@ public class GridSpawner : MonoBehaviour
     private void Start()
     {
         objectEvent.reciveEvent += RemoveFromList;
-        GameManager.updateTimeEvent += DificultyCalculating;
+
         Init();
 
         StartCoroutine(Spawner());
@@ -50,7 +49,7 @@ public class GridSpawner : MonoBehaviour
 
             objectsOnGridDictionary.Add(spawnedObject.transform, gridPosition);
 
-            yield return new WaitForSeconds(time);
+            yield return new WaitForSeconds(GameManager.instance.SpawnDificultyCalculating());
         }
     }
     private GameObject RandomObject()
@@ -99,11 +98,6 @@ public class GridSpawner : MonoBehaviour
         rectCellWidth = width / (float)gridSize.x;
         rectCellHeight = heigh / (float)gridSize.y;
     }
-    
-    private void DificultyCalculating(float value)
-    {
-        time = dificultyCurveLvl.Evaluate(value);
-    }
 
   
     private void OnDrawGizmos() {
@@ -127,7 +121,6 @@ public class GridSpawner : MonoBehaviour
 
     private void OnDestroy() {
         objectEvent.reciveEvent -= RemoveFromList;
-        GameManager.updateTimeEvent -= DificultyCalculating;
     }
     
 }
