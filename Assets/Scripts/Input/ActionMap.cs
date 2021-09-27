@@ -30,7 +30,23 @@ public class @ActionMap : IInputActionCollection, IDisposable
                     ""name"": ""Position"",
                     ""type"": ""Value"",
                     ""id"": ""b6bee053-7937-4ff6-9d9e-8a50a40e383b"",
-                    ""expectedControlType"": """",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MobileClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""cbede09a-c569-459d-9902-2ec7e43b7a0d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""MobileClick2"",
+                    ""type"": ""Button"",
+                    ""id"": ""602208b4-d40d-462a-9bbe-ed5ce436bd3f"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -38,29 +54,29 @@ public class @ActionMap : IInputActionCollection, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""69c442cc-e566-40cb-b7e3-1105d8975cd7"",
-                    ""path"": ""<Touchscreen>/primaryTouch/tap"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Click"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""10c9e88e-a878-4827-a419-1c5540240b8b"",
+                    ""id"": ""da84ab85-37e0-4a48-8f83-6d4b186a5f7e"",
                     ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
+                    ""groups"": ""Mobile"",
                     ""action"": ""Click"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""04cd512e-8d71-470a-a2dd-d02aa16882d5"",
+                    ""id"": ""3673eb58-6865-4b6f-bf5a-7c465fe047df"",
+                    ""path"": ""<Touchscreen>/primaryTouch/startPosition"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""MobileClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe88d5ff-e054-486c-bc25-ed06cf6daa43"",
                     ""path"": ""<Mouse>/position"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -71,24 +87,37 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""72ec3ea8-c4ad-4961-be04-c7e4b3bc5473"",
-                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""id"": ""93dc1cf2-41ce-436c-822c-6ba8b42a334d"",
+                    ""path"": ""<Touchscreen>/touch1/startPosition"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Position"",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""MobileClick2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
             ]
         }
     ],
-    ""controlSchemes"": []
+    ""controlSchemes"": [
+        {
+            ""name"": ""Mobile"",
+            ""bindingGroup"": ""Mobile"",
+            ""devices"": []
+        },
+        {
+            ""name"": ""Computer"",
+            ""bindingGroup"": ""Computer"",
+            ""devices"": []
+        }
+    ]
 }");
         // Gameplay
         m_Gameplay = asset.FindActionMap("Gameplay", throwIfNotFound: true);
         m_Gameplay_Click = m_Gameplay.FindAction("Click", throwIfNotFound: true);
         m_Gameplay_Position = m_Gameplay.FindAction("Position", throwIfNotFound: true);
+        m_Gameplay_MobileClick = m_Gameplay.FindAction("MobileClick", throwIfNotFound: true);
+        m_Gameplay_MobileClick2 = m_Gameplay.FindAction("MobileClick2", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -140,12 +169,16 @@ public class @ActionMap : IInputActionCollection, IDisposable
     private IGameplayActions m_GameplayActionsCallbackInterface;
     private readonly InputAction m_Gameplay_Click;
     private readonly InputAction m_Gameplay_Position;
+    private readonly InputAction m_Gameplay_MobileClick;
+    private readonly InputAction m_Gameplay_MobileClick2;
     public struct GameplayActions
     {
         private @ActionMap m_Wrapper;
         public GameplayActions(@ActionMap wrapper) { m_Wrapper = wrapper; }
         public InputAction @Click => m_Wrapper.m_Gameplay_Click;
         public InputAction @Position => m_Wrapper.m_Gameplay_Position;
+        public InputAction @MobileClick => m_Wrapper.m_Gameplay_MobileClick;
+        public InputAction @MobileClick2 => m_Wrapper.m_Gameplay_MobileClick2;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -161,6 +194,12 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 @Position.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPosition;
                 @Position.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPosition;
                 @Position.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPosition;
+                @MobileClick.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick;
+                @MobileClick.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick;
+                @MobileClick.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick;
+                @MobileClick2.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick2;
+                @MobileClick2.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick2;
+                @MobileClick2.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick2;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -171,13 +210,39 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 @Position.started += instance.OnPosition;
                 @Position.performed += instance.OnPosition;
                 @Position.canceled += instance.OnPosition;
+                @MobileClick.started += instance.OnMobileClick;
+                @MobileClick.performed += instance.OnMobileClick;
+                @MobileClick.canceled += instance.OnMobileClick;
+                @MobileClick2.started += instance.OnMobileClick2;
+                @MobileClick2.performed += instance.OnMobileClick2;
+                @MobileClick2.canceled += instance.OnMobileClick2;
             }
         }
     }
     public GameplayActions @Gameplay => new GameplayActions(this);
+    private int m_MobileSchemeIndex = -1;
+    public InputControlScheme MobileScheme
+    {
+        get
+        {
+            if (m_MobileSchemeIndex == -1) m_MobileSchemeIndex = asset.FindControlSchemeIndex("Mobile");
+            return asset.controlSchemes[m_MobileSchemeIndex];
+        }
+    }
+    private int m_ComputerSchemeIndex = -1;
+    public InputControlScheme ComputerScheme
+    {
+        get
+        {
+            if (m_ComputerSchemeIndex == -1) m_ComputerSchemeIndex = asset.FindControlSchemeIndex("Computer");
+            return asset.controlSchemes[m_ComputerSchemeIndex];
+        }
+    }
     public interface IGameplayActions
     {
         void OnClick(InputAction.CallbackContext context);
         void OnPosition(InputAction.CallbackContext context);
+        void OnMobileClick(InputAction.CallbackContext context);
+        void OnMobileClick2(InputAction.CallbackContext context);
     }
 }
