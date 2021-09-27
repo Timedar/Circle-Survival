@@ -11,8 +11,8 @@ public class InputReader : MonoBehaviour, ActionMap.IGameplayActions
     public event UnityAction<Vector2> onClickStart = delegate {};
     public event UnityAction<Vector2> onClick2Start = delegate {};
 
-    public Vector2 position;
-    public bool tap;
+    [HideInInspector] public Vector2 position;
+    [HideInInspector] public bool tap;
     private void Awake() {
         current = this;
         actionMap = new ActionMap();

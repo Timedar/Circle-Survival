@@ -15,7 +15,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI ScoreTMP;
     [SerializeField] TextMeshProUGUI TimeTMP;
     [SerializeField] TextMeshProUGUI BestScoreTMP;
-    [SerializeField] TextMeshProUGUI ResumeCounterTMP;
     [SerializeField] TextMeshProUGUI TimeTMPPause;
     [SerializeField] TextMeshProUGUI ScoreTMPPause;
     [SerializeField] TextMeshProUGUI BestScoreTMPPause;
