@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI ScoreTMP;
     [SerializeField] TextMeshProUGUI TimeTMP;
     [SerializeField] TextMeshProUGUI BestScoreTMP;
+    [SerializeField] TextMeshProUGUI ResumeCounterTMP;
+    [SerializeField] TextMeshProUGUI TimeTMPPause;
+    [SerializeField] TextMeshProUGUI ScoreTMPPause;
+    [SerializeField] TextMeshProUGUI BestScoreTMPPause;
+    [SerializeField] Button resumeButton;
     
     private void Awake() {
         instance = this;
@@ -38,6 +44,7 @@ public class UIManager : MonoBehaviour
     {
         ScoreTMP.GetComponent<Animator>().SetTrigger("ChangeNum");
         ScoreTMP.text = score.ToString();
+        ScoreTMPPause.text = score.ToString();
     }
 
     void UpdateBestScore()
@@ -46,11 +53,38 @@ public class UIManager : MonoBehaviour
         BestScoreTMP.text = BestScoreSource.bestScore.ToString();
     }
 
-    public void GameOverScrene(string state)
+    public void Resume()
+    {
+        HUDCanvas.enabled = true;
+        gameOverPauseCanvas.enabled = false;
+        Time.timeScale = 1;
+    }
+    public void GameoverScreen(string state)
     {
         ComunicatTMP.text = state;
         HUDCanvas.enabled = false;
         gameOverPauseCanvas.enabled = true;
+
+        resumeButton.gameObject.SetActive(false);
+
+        TimeTMPPause.text = TimeTMP.text;
+        BestScoreTMPPause.text = BestScoreSource.bestScore.ToString();
     }
 
+    public void PauseScreen(string state)
+    {
+        Time.timeScale = 0;
+        ComunicatTMP.text = state;
+        HUDCanvas.enabled = false;
+        gameOverPauseCanvas.enabled = true;
+
+        resumeButton.gameObject.SetActive(true);
+
+        TimeTMPPause.text = TimeTMP.text;
+        BestScoreTMPPause.text = BestScoreSource.bestScore.ToString();
+    }
+
+    private void OnDestroy() {
+        Time.timeScale = 1;
+    }
 }

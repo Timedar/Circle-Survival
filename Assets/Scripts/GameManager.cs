@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -16,7 +17,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public AnimationCurve dificultyBombTimerCurveLvl;
     float timeFromBegin;
     private Camera mainCamera;
-
+    private bool gameOver;
     private void Awake() {
         mainCamera = Camera.main;
         instance = this;
@@ -30,6 +31,9 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update() {
+        if(gameOver)
+            return;
+
         timeFromBegin += Time.deltaTime;
         updateTimeEvent.Invoke(timeFromBegin);
     }
@@ -58,12 +62,28 @@ public class GameManager : MonoBehaviour
     //Podobne 2 funckje
     public void Pause()
     {
-        UIManager.instance.GameOverScrene("PAUSE");
+        InputReader.current.onClickStart -= OnClick;
+        InputReader.current.onClick2Start -= OnClick;
+        
+        UIManager.instance.PauseScreen("PAUSE");
     }
+
+    public void Resume()
+    {
+        InputReader.current.onClickStart += OnClick;
+        InputReader.current.onClick2Start += OnClick;
+        UIManager.instance.Resume();
+    }
+
+    //Stop game and show ending screen
     public void GameOver()
     {
-        //Stop game and show ending screen
-        UIManager.instance.GameOverScrene("GAME OVER");
+        gameOver = true;
+        
+        InputReader.current.onClickStart -= OnClick;
+        InputReader.current.onClick2Start -= OnClick;
+
+        UIManager.instance.GameoverScreen("GAME OVER");
         Debug.Log("Boom");
     }
 
@@ -81,8 +101,8 @@ public class GameManager : MonoBehaviour
         {
             ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Grass, mousePos);
         }
-    
     }
+    
     private void OnDestroy() {
         scoreEvent.reciveEvent -= CountingPoints;
         gameOverEvent.reciveEvent -= GameOver;
