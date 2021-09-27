@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Save", menuName = "ScriptableObjects/Save", order = 1)]
@@ -8,11 +6,16 @@ public class SaveParameters : ScriptableObject
 {
     [SerializeField] public int bestScore;
 
-    private void Awake() {
-        bestScore = PlayerPrefs.GetInt("Score",0);
+
+    public void Load() {
+        Debug.Log("Load");
+        var score = PlayerPrefs.GetInt("Score");
+        bestScore = score;
     }
-    private void OnDestroy() {
+
+    public void Save() {
+        Debug.Log("Save");
         PlayerPrefs.SetInt("Score", bestScore);
         PlayerPrefs.Save();
-    }
+    }   
 }

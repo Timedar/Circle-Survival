@@ -21,11 +21,13 @@ public class UIManager : MonoBehaviour
     private void OnEnable() {
         GameManager.updateScoreEvent += UpdateScore;
         GameManager.updateTimeEvent += UpdateTime;
+        GameManager.updateBestScoreEvent += UpdateBestScore;
     }
 
     private void OnDisable() {
         GameManager.updateScoreEvent -= UpdateScore;
         GameManager.updateTimeEvent -= UpdateTime;
+        GameManager.updateBestScoreEvent -= UpdateBestScore;
     }
     void UpdateTime(float time)
     {
@@ -38,7 +40,7 @@ public class UIManager : MonoBehaviour
         ScoreTMP.text = score.ToString();
     }
 
-    void UpdateBestScore(int bestScore)
+    void UpdateBestScore()
     {
         BestScoreTMP.transform.parent.gameObject.SetActive(true);
         BestScoreTMP.text = BestScoreSource.bestScore.ToString();
