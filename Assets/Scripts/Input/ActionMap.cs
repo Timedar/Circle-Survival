@@ -41,6 +41,14 @@ public class @ActionMap : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""MobileClick2"",
+                    ""type"": ""Button"",
+                    ""id"": ""602208b4-d40d-462a-9bbe-ed5ce436bd3f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -76,6 +84,17 @@ public class @ActionMap : IInputActionCollection, IDisposable
                     ""action"": ""Position"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93dc1cf2-41ce-436c-822c-6ba8b42a334d"",
+                    ""path"": ""<Touchscreen>/touch1/startPosition"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""MobileClick2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -98,6 +117,7 @@ public class @ActionMap : IInputActionCollection, IDisposable
         m_Gameplay_Click = m_Gameplay.FindAction("Click", throwIfNotFound: true);
         m_Gameplay_Position = m_Gameplay.FindAction("Position", throwIfNotFound: true);
         m_Gameplay_MobileClick = m_Gameplay.FindAction("MobileClick", throwIfNotFound: true);
+        m_Gameplay_MobileClick2 = m_Gameplay.FindAction("MobileClick2", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -150,6 +170,7 @@ public class @ActionMap : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Click;
     private readonly InputAction m_Gameplay_Position;
     private readonly InputAction m_Gameplay_MobileClick;
+    private readonly InputAction m_Gameplay_MobileClick2;
     public struct GameplayActions
     {
         private @ActionMap m_Wrapper;
@@ -157,6 +178,7 @@ public class @ActionMap : IInputActionCollection, IDisposable
         public InputAction @Click => m_Wrapper.m_Gameplay_Click;
         public InputAction @Position => m_Wrapper.m_Gameplay_Position;
         public InputAction @MobileClick => m_Wrapper.m_Gameplay_MobileClick;
+        public InputAction @MobileClick2 => m_Wrapper.m_Gameplay_MobileClick2;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -175,6 +197,9 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 @MobileClick.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick;
                 @MobileClick.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick;
                 @MobileClick.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick;
+                @MobileClick2.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick2;
+                @MobileClick2.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick2;
+                @MobileClick2.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnMobileClick2;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -188,6 +213,9 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 @MobileClick.started += instance.OnMobileClick;
                 @MobileClick.performed += instance.OnMobileClick;
                 @MobileClick.canceled += instance.OnMobileClick;
+                @MobileClick2.started += instance.OnMobileClick2;
+                @MobileClick2.performed += instance.OnMobileClick2;
+                @MobileClick2.canceled += instance.OnMobileClick2;
             }
         }
     }
@@ -215,5 +243,6 @@ public class @ActionMap : IInputActionCollection, IDisposable
         void OnClick(InputAction.CallbackContext context);
         void OnPosition(InputAction.CallbackContext context);
         void OnMobileClick(InputAction.CallbackContext context);
+        void OnMobileClick2(InputAction.CallbackContext context);
     }
 }

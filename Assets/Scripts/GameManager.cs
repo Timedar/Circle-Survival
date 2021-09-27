@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameEvent scoreEvent;
     public static event UnityAction<int> updateScoreEvent = delegate{};
     public static event UnityAction<float> updateTimeEvent = delegate{};
-    public static event UnityAction<int> updateBestScoreEvent = delegate{};
     [SerializeField] public AnimationCurve dificultySpawnCurveLvl;
     [SerializeField] public AnimationCurve dificultyBombTimerCurveLvl;
     float timeFromBegin;
@@ -26,12 +25,12 @@ public class GameManager : MonoBehaviour
         scoreEvent.reciveEvent += CountingPoints;
         gameOverEvent.reciveEvent += GameOver;
         InputReader.current.onClickStart += OnClick;
+        InputReader.current.onClick2Start += OnClick;
     }
 
     private void Update() {
         timeFromBegin += Time.deltaTime;
         updateTimeEvent.Invoke(timeFromBegin);
-        // Debug.Log(Touchscreen.current.position.ReadValue());
     }
 
     public void CountingPoints()
@@ -40,10 +39,7 @@ public class GameManager : MonoBehaviour
         currentScore += 1;
         updateScoreEvent.Invoke(currentScore);
         if(saveSO.bestScore < currentScore)
-        {
             saveSO.bestScore = currentScore;
-            updateBestScoreEvent.Invoke(saveSO.bestScore);
-        }
     }
 
     public float SpawnDificultyCalculating()
@@ -87,6 +83,7 @@ public class GameManager : MonoBehaviour
         scoreEvent.reciveEvent -= CountingPoints;
         gameOverEvent.reciveEvent -= GameOver;
         InputReader.current.onClickStart -= OnClick;
+        InputReader.current.onClick2Start -= OnClick;
     }
 
     private void OnDrawGizmos() {

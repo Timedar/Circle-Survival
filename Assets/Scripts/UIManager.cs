@@ -7,6 +7,7 @@ using UnityEngine.Events;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance;
+    [SerializeField] SaveParameters BestScoreSource;
     [SerializeField] Canvas HUDCanvas;
     [SerializeField] Canvas gameOverPauseCanvas;
     [SerializeField] TextMeshProUGUI ComunicatTMP;
@@ -20,11 +21,9 @@ public class UIManager : MonoBehaviour
     private void OnEnable() {
         GameManager.updateScoreEvent += UpdateScore;
         GameManager.updateTimeEvent += UpdateTime;
-        GameManager.updateBestScoreEvent += UpdateBestScore;
     }
 
     private void OnDisable() {
-        GameManager.updateBestScoreEvent -= UpdateBestScore;
         GameManager.updateScoreEvent -= UpdateScore;
         GameManager.updateTimeEvent -= UpdateTime;
     }
@@ -42,7 +41,7 @@ public class UIManager : MonoBehaviour
     void UpdateBestScore(int bestScore)
     {
         BestScoreTMP.transform.parent.gameObject.SetActive(true);
-        BestScoreTMP.text = bestScore.ToString();
+        BestScoreTMP.text = BestScoreSource.bestScore.ToString();
     }
 
     public void GameOverScrene(string state)

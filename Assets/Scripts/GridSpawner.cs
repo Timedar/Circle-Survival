@@ -34,6 +34,11 @@ public class GridSpawner : MonoBehaviour
 
         Init();
 
+        if(!queueDictionary.ContainsKey(bombPrefab.tag))
+            queueDictionary.Add(bombPrefab.tag, new Queue<GameObject>());
+        if(!queueDictionary.ContainsKey(pointPrefab.tag))
+            queueDictionary.Add(pointPrefab.tag, new Queue<GameObject>());
+
         StartCoroutine(Spawner());
     }
 
@@ -105,8 +110,6 @@ public class GridSpawner : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
 
-        queueDictionary.Add(bombPrefab.tag, new Queue<GameObject>());
-        queueDictionary.Add(pointPrefab.tag, new Queue<GameObject>());
 
         Vector3[] v = new Vector3[4];
         rectTransform.GetWorldCorners(v);
@@ -142,6 +145,7 @@ public class GridSpawner : MonoBehaviour
     private void OnDestroy() {
         objectEvent.reciveEvent -= RemoveFromList;
         gameOverEvent.reciveEvent -= GameOver;
+        queueDictionary.Clear();
     }
     
 }
