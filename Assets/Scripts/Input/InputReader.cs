@@ -8,7 +8,7 @@ public class InputReader : MonoBehaviour, ActionMap.IGameplayActions
 {
     public static InputReader current;
     ActionMap actionMap;
-    public event UnityAction onClickStart = delegate {};
+    public event UnityAction<Vector2> onClickStart = delegate {};
     public Vector2 position;
     public bool tap;
     private void Awake() {
@@ -32,8 +32,10 @@ public class InputReader : MonoBehaviour, ActionMap.IGameplayActions
             case InputActionPhase.Started:
                 tap = true;
                 Debug.Log("Click");
-                onClickStart.Invoke();
+                
+                onClickStart.Invoke(position);
                 break;
+                
             case InputActionPhase.Performed:
                 tap = false;
                 break;
@@ -43,6 +45,12 @@ public class InputReader : MonoBehaviour, ActionMap.IGameplayActions
     public void OnPosition(InputAction.CallbackContext context)
     {
         position = context.ReadValue<Vector2>();
+    }
+
+    public void OnMobileClick(InputAction.CallbackContext context)
+    {
+        position = context.ReadValue<Vector2>();
+        onClickStart.Invoke(position);
     }
 }
 

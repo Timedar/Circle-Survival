@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     private void Update() {
         timeFromBegin += Time.deltaTime;
         updateTimeEvent.Invoke(timeFromBegin);
+        // Debug.Log(Touchscreen.current.position.ReadValue());
     }
 
     public void CountingPoints()
@@ -66,8 +68,8 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void OnClick() {
-        Vector2 mousePos = mainCamera.ScreenToWorldPoint(InputReader.current.position);
+    private void OnClick(Vector2 pos) {
+        Vector2 mousePos = mainCamera.ScreenToWorldPoint(pos);
         RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
         if(hit)
         {
