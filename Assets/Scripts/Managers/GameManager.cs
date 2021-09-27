@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     float timeFromBegin;
     private Camera mainCamera;
     private bool gameOver;
+
     private void Awake() {
         mainCamera = Camera.main;
         instance = this;
@@ -45,8 +46,8 @@ public class GameManager : MonoBehaviour
         updateScoreEvent.Invoke(currentScore);
         if(saveSO.bestScore < currentScore)
         {
-            updateBestScoreEvent.Invoke();
             saveSO.bestScore = currentScore;
+            updateBestScoreEvent.Invoke();
         }
     }
 
@@ -59,7 +60,6 @@ public class GameManager : MonoBehaviour
         return dificultyBombTimerCurveLvl.Evaluate(timeFromBegin);
     }
 
-    //Podobne 2 funckje
     public void Pause()
     {
         InputReader.current.onClickStart -= OnClick;
