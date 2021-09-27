@@ -19,7 +19,7 @@ public class ExplosionCounting : MonoBehaviour
     private void Awake() {
         tmp = GetComponentInChildren<TextMeshProUGUI>();
     }
-    private void Start()
+    private void OnEnable()
     {
         if(this.CompareTag("Bomb"))
         {
@@ -36,6 +36,10 @@ public class ExplosionCounting : MonoBehaviour
         StartCoroutine(ExplosionCounter(ramndomExplosionTime));
     }
 
+    private void OnDisable() {
+        image.fillAmount = 1;
+    }
+
     public void BombClick()
     {
         if(!isBomb)
@@ -49,9 +53,9 @@ public class ExplosionCounting : MonoBehaviour
             ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Boom, this.transform.position);
         }
         
-        //Zmienic
         objectEvent.CallEvnet(this.transform);
-        Destroy(this.gameObject);
+        GridSpawner.queueDictionary[this.tag].Enqueue(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 
     private IEnumerator ExplosionCounter(float time)
@@ -72,9 +76,9 @@ public class ExplosionCounting : MonoBehaviour
             ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Boom, this.transform.position);
         }
 
-        //Zmienic
         objectEvent.CallEvnet(this.transform);
-        Destroy(this.gameObject);
+        GridSpawner.queueDictionary[this.tag].Enqueue(this.gameObject);
+        this.gameObject.SetActive(false);
         yield return null;
     }
 }

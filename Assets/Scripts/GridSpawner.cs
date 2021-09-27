@@ -12,6 +12,7 @@ public class GridSpawner : MonoBehaviour
     [SerializeField] GameObject bombPrefab;
     [SerializeField] bool drawGrid;
     public Dictionary<Transform, Vector2> objectsOnGridDictionary = new Dictionary<Transform, Vector2>();
+    public static Dictionary<string, Queue<GameObject>> queueDictionary = new Dictionary<string, Queue<GameObject>>(); 
     float bombIndicator = 0.1f;
     float total;
     float precentage;
@@ -27,7 +28,7 @@ public class GridSpawner : MonoBehaviour
     private float time = 1;
 
     private void Start()
-    {
+    { 
         objectEvent.reciveEvent += RemoveFromList;
         gameOverEvent.reciveEvent += GameOver;
 
@@ -47,9 +48,22 @@ public class GridSpawner : MonoBehaviour
             if(objectsOnGridDictionary.ContainsValue(gridPosition))
                 continue;
 
-            var spawnedObject = Instantiate(RandomObject(), new Vector3(x, y, 0), Quaternion.identity, rectTransform.transform); 
+            var spawnedItem = RandomObject();
 
-            objectsOnGridDictionary.Add(spawnedObject.transform, gridPosition);
+            
+            if(queueDictionary[spawnedItem.tag].Count > 0)
+            {
+                spawnedItem = queueDictionary[spawnedItem.tag].Dequeue();
+                objectsOnGridDictionary.Add(spawnedItem.transform, gridPosition);
+
+                spawnedItem.transform.position = new Vector3(x, y, 0);
+                spawnedItem.SetActive(true);
+            }
+            else
+            {
+                spawnedItem = Instantiate(spawnedItem, new Vector3(x, y, 0), Quaternion.identity, rectTransform.transform); 
+                objectsOnGridDictionary.Add(spawnedItem.transform, gridPosition);  
+            }
 
             yield return new WaitForSeconds(GameManager.instance.SpawnDificultyCalculating());
         }
@@ -90,6 +104,9 @@ public class GridSpawner : MonoBehaviour
     private void Init()
     {
         rectTransform = GetComponent<RectTransform>();
+
+        queueDictionary.Add(bombPrefab.tag, new Queue<GameObject>());
+        queueDictionary.Add(pointPrefab.tag, new Queue<GameObject>());
 
         Vector3[] v = new Vector3[4];
         rectTransform.GetWorldCorners(v);

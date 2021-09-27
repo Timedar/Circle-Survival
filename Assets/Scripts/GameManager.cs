@@ -67,10 +67,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("Boom");
     }
 
-
+    Vector2 mousePos = Vector2.zero;
     private void OnClick(Vector2 pos) {
-        Vector2 mousePos = mainCamera.ScreenToWorldPoint(pos);
-        RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
+        mousePos = mainCamera.ScreenToWorldPoint(pos);
+        RaycastHit2D hit = Physics2D.CircleCast(mousePos, 0.7f, Vector2.zero);
         if(hit)
         {
             var selected = hit.transform.GetComponent<ExplosionCounting>();
@@ -89,4 +89,7 @@ public class GameManager : MonoBehaviour
         InputReader.current.onClickStart -= OnClick;
     }
 
+    private void OnDrawGizmos() {
+        Gizmos.DrawSphere(mousePos,0.7f);
+    }
 }
