@@ -7,6 +7,7 @@ public class GridSpawner : MonoBehaviour
 {
     [SerializeField] Vector2Int gridSize = new Vector2Int(1,1);
     [SerializeField] GameEventTransform objectEvent;
+    [SerializeField] GameEvent gameOverEvent;
     [SerializeField] GameObject pointPrefab;
     [SerializeField] GameObject bombPrefab;
     [SerializeField] bool drawGrid;
@@ -28,6 +29,7 @@ public class GridSpawner : MonoBehaviour
     private void Start()
     {
         objectEvent.reciveEvent += RemoveFromList;
+        gameOverEvent.reciveEvent += GameOver;
 
         Init();
 
@@ -119,8 +121,10 @@ public class GridSpawner : MonoBehaviour
         }
     }
 
+    private void GameOver() => StopAllCoroutines();
     private void OnDestroy() {
         objectEvent.reciveEvent -= RemoveFromList;
+        gameOverEvent.reciveEvent -= GameOver;
     }
     
 }

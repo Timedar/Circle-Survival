@@ -2500,11 +2500,11 @@ RectTransform:
   m_Father: {fileID: 1240017448}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -490, y: -134.21002}
-  m_SizeDelta: {x: 980, y: 134.21}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 134.21}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1739105589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2895,9 +2895,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gridSize: {x: 12, y: 6}
   objectEvent: {fileID: 11400000, guid: d8be5ecc2266ac04c964a456bb58604f, type: 2}
+  gameOverEvent: {fileID: 11400000, guid: 3e4bb001ee55ae240836df216c856b5c, type: 2}
   pointPrefab: {fileID: 258569878908819579, guid: 2fbb6f13dd1ea844b80b49e3d938c39f, type: 3}
   bombPrefab: {fileID: 164173270566095349, guid: aa456940a202085418556f472d398ab0, type: 3}
-  drawGrid: 1
+  drawGrid: 0
 --- !u!222 &1926084096
 CanvasRenderer:
   m_ObjectHideFlags: 0
