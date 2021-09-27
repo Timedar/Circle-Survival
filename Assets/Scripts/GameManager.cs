@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.InputSystem;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameEvent scoreEvent;
     public static event UnityAction<int> updateScoreEvent = delegate{};
     public static event UnityAction<float> updateTimeEvent = delegate{};
+    public static event UnityAction<int> updateBestScoreEvent = delegate{};
     [SerializeField] public AnimationCurve dificultySpawnCurveLvl;
     [SerializeField] public AnimationCurve dificultyBombTimerCurveLvl;
     float timeFromBegin;
@@ -42,7 +40,7 @@ public class GameManager : MonoBehaviour
         if(saveSO.bestScore < currentScore)
         {
             saveSO.bestScore = currentScore;
-            updateScoreEvent.Invoke(saveSO.bestScore);
+            updateBestScoreEvent.Invoke(saveSO.bestScore);
         }
     }
 
@@ -76,6 +74,10 @@ public class GameManager : MonoBehaviour
             var selected = hit.transform.GetComponent<ExplosionCounting>();
             if(selected != null)
                 selected.BombClick();
+        }
+        else
+        {
+            ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Grass, mousePos);
         }
     
     }

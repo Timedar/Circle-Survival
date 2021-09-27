@@ -39,9 +39,15 @@ public class ExplosionCounting : MonoBehaviour
     public void BombClick()
     {
         if(!isBomb)
+        {
             score.CallEvnet();
+            ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Point, this.transform.position);
+        }
         else
+        {
             gameOver.CallEvnet();
+            ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Boom, this.transform.position);
+        }
         
         //Zmienic
         objectEvent.CallEvnet(this.transform);
@@ -61,7 +67,10 @@ public class ExplosionCounting : MonoBehaviour
         }
         
         if(!isBomb)
+        {
             gameOver.CallEvnet();
+            ParticleSystemManager.instance.SetParticle(ParticleSystemManager.SelectParticle.Boom, this.transform.position);
+        }
 
         //Zmienic
         objectEvent.CallEvnet(this.transform);

@@ -20,9 +20,11 @@ public class UIManager : MonoBehaviour
     private void OnEnable() {
         GameManager.updateScoreEvent += UpdateScore;
         GameManager.updateTimeEvent += UpdateTime;
+        GameManager.updateBestScoreEvent += UpdateBestScore;
     }
 
     private void OnDisable() {
+        GameManager.updateBestScoreEvent -= UpdateBestScore;
         GameManager.updateScoreEvent -= UpdateScore;
         GameManager.updateTimeEvent -= UpdateTime;
     }
@@ -39,8 +41,8 @@ public class UIManager : MonoBehaviour
 
     void UpdateBestScore(int bestScore)
     {
-        BestScoreTMP.GetComponentInParent<Animator>().enabled = true;
-        BestScoreTMP.text = $"NEW BEST SCORE {bestScore}!";
+        BestScoreTMP.transform.parent.gameObject.SetActive(true);
+        BestScoreTMP.text = bestScore.ToString();
     }
 
     public void GameOverScrene(string state)
